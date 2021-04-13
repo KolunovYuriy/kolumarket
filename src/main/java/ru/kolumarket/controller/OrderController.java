@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/orders")
+//http://localhost:8189/market/orders/
 public class OrderController {
     @Autowired
     private HttpSession httpSession;

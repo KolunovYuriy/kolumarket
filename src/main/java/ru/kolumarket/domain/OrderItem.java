@@ -23,8 +23,8 @@ public class OrderItem {
     @Setter
     @Getter
     public static class Id implements Serializable {
-        @Column(name = "customer_id")
-        private Long customerId;
+        @Column(name = "order_id")
+        private Long orderId;
 
         @Column(name = "product_id")
         private Long productId;
@@ -35,12 +35,12 @@ public class OrderItem {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Id id = (Id) o;
-            return Objects.equals(customerId, id.customerId) && Objects.equals(productId, id.productId);
+            return Objects.equals(orderId, id.orderId) && Objects.equals(productId, id.productId);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(customerId, productId);
+            return Objects.hash(orderId, productId);
         }
     }
 
@@ -49,10 +49,10 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(
-            name = "customer_id",
+            name = "order_id",
             insertable = false, updatable = false
     )
-    private Customer customer;
+    private Order order;
 
     @ManyToOne
     @JoinColumn(
@@ -64,13 +64,13 @@ public class OrderItem {
     @Column(name = "count")
     private int count;
 
-    public OrderItem(Product product, Customer customer) {
+    public OrderItem(Product product, Order order) {
         this.product = product;
-        this.customer = customer;
+        this.order = order;
         this.id.productId = product.getId();
-        this.id.customerId = customer.getId();
+        this.id.orderId = order.getId();
         this.count = 0;
-        customer.getOrderItems().add(this);
+        order.getOrderItems().add(this);
         product.getOrderItems().add(this);
     }
 

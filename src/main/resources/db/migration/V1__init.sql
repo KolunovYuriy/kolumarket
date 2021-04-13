@@ -83,4 +83,17 @@ INSERT INTO customers (id,name, user_id) VALUES
 (2,'Petya',2)
 ;
 
-CREATE TABLE order_items (customer_id int, product_id int, count int, FOREIGN KEY (customer_id) REFERENCES customers (id), FOREIGN KEY (product_id) REFERENCES products (id));
+CREATE TABLE orders (
+    id bigserial PRIMARY KEY,
+    status VARCHAR(255),
+    customer_id int,
+    created_at timestamp default current_timestamp,
+    FOREIGN KEY (customer_id) REFERENCES customers (id));
+
+CREATE TABLE order_items (
+    order_id int,
+    product_id int,
+    count int,
+    FOREIGN KEY (order_id) REFERENCES orders (id),
+    FOREIGN KEY (product_id) REFERENCES products (id));
+

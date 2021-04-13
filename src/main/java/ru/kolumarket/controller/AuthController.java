@@ -33,6 +33,7 @@ public class AuthController {
     }
 
     @PostMapping("/auth")
+    //http://localhost:8189/market/auth/
     public ResponseEntity<?> auth(@RequestBody AuthRequestDTO request) {
         User user = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
         if (user == null) return new ResponseEntity<>(new MarketError(HttpStatus.NOT_FOUND.value(), "Access denied"),HttpStatus.NOT_ACCEPTABLE);

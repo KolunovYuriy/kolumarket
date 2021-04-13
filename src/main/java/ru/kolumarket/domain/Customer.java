@@ -33,8 +33,7 @@ public class Customer {
     private User user;
 
     @OneToMany(mappedBy = "customer")
-    //@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
-    private List<OrderItem> orderItems;
+    private List<Order> orders;
 
     @Override
     public String toString() {
@@ -54,21 +53,11 @@ public class Customer {
         return Objects.hash(id, name);
     }
 
-    public Customer(String name) {
-        this.name = name;
-    }
-
-    public Customer(String name, String sessionId) {
-        this.name = name;
-        this.sessionId = sessionId;
-        this.user = new User();
-        this.orderItems = new ArrayList<>();
-    }
     public Customer(String name, User user) {
         if (name.equals(""))
             this.name = user.getLogin();
         else this.name = name;
         this.user = user;
-        this.orderItems = new ArrayList<>();
+        this.orders = new ArrayList<>();
     }
 }
