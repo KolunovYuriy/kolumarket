@@ -6,7 +6,7 @@ spring:
   datasource:
     platform: postgres
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5433/postgres?currentSchema=kolumarket
+    url: jdbc:postgresql://localhost:5434/postgres?currentSchema=kolumarket
     username: postgres
     password: password
   jpa:

@@ -35,6 +35,9 @@ public class Product {
     //@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<OrderItem> orderItems;
 
+    @OneToMany(mappedBy = "product")
+    private List<ProductItem> productItems;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
