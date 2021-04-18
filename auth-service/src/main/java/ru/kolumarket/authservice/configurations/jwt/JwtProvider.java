@@ -1,4 +1,4 @@
-package ru.kolumarket.configurations.jwt;
+package ru.kolumarket.authservice.configurations.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -16,11 +16,9 @@ import java.util.Date;
 public class JwtProvider {
 
     @Value("${kolumarket.jwt.secret}")
-    //@Value("jwtSecretKey")
     private String jwtSecret;
 
     @Value("${kolumarket.jwt.expiration}")
-    //@Value("1")
     private String jwtExpiration;
 
     public String generateToken(String login) {

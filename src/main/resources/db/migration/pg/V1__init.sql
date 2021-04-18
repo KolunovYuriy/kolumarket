@@ -107,12 +107,12 @@ INSERT INTO warehouses (id,location) VALUES
 ;
 
 CREATE TABLE product_items (
-                            warehouses_id int,
+                            warehouse_id int,
                             product_id int,
                             count int,
-                            FOREIGN KEY (warehouses_id) REFERENCES warehouses (id),
+                            FOREIGN KEY (warehouse_id) REFERENCES warehouses (id),
                             FOREIGN KEY (product_id) REFERENCES products (id));
-INSERT INTO product_items (warehouses_id,product_id,count) VALUES
+INSERT INTO product_items (warehouse_id,product_id,count) VALUES
 (1,1,100),
 (1,3,100),
 (1,5,100),

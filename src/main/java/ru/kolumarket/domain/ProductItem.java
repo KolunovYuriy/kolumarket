@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,7 +24,7 @@ public class ProductItem {
     @Setter
     @Getter
     public static class Id implements Serializable {
-        @Column(name = "warewarehouse_id")
+        @Column(name = "warehouse_id")
         private Long warehouseId;
 
         @Column(name = "product_id")
@@ -51,6 +52,7 @@ public class ProductItem {
             name = "warehouse_id",
             insertable = false, updatable = false
     )
+    @Cascade(org.hibernate.annotations.CascadeType.DETACH)
     private Warehouse warehouse;
 
     @ManyToOne

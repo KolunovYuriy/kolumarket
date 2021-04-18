@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
+import ru.kolumarket.dto.ProductDTO;
 
 import javax.persistence.*;
 import java.util.List;
@@ -32,10 +34,11 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product")
-    //@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<OrderItem> orderItems;
 
     @OneToMany(mappedBy = "product")
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<ProductItem> productItems;
 
     @Override
@@ -54,6 +57,12 @@ public class Product {
     public Product(String title, int price) {
         this.title = title;
         this.price = price;
+    }
+
+    public Product(String title, int price, Category category) {
+        this.title = title;
+        this.price = price;
+        this.category = category;
     }
 
 }

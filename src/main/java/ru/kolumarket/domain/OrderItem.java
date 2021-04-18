@@ -29,7 +29,6 @@ public class OrderItem {
         @Column(name = "product_id")
         private Long productId;
 
-
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;

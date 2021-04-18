@@ -2,6 +2,7 @@ package ru.kolumarket.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.kolumarket.domain.Category;
 import ru.kolumarket.domain.Product;
 
 @Data
@@ -18,4 +19,5 @@ public class ProductDTO {
         this.price = p.getPrice();
         this.category = p.getCategory().getTitle();
     }
+
 }

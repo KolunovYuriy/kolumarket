@@ -6,8 +6,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ru.kolumarket.domain.Category;
 import ru.kolumarket.domain.Product;
 import ru.kolumarket.dto.ProductDTO;
+import ru.kolumarket.exeptions.ResourceNotFoundException;
+import ru.kolumarket.repository.CategoryRepository;
 import ru.kolumarket.repository.ProductRepository;
 import ru.kolumarket.repository.SortDirection;
 
@@ -22,6 +25,9 @@ public class ProductService {
 
     @Autowired
     private ProductRepository productRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     public Optional<ProductDTO> getById(Long id) {
         return productRepository.findById(id).map(ProductDTO::new);
@@ -84,8 +90,28 @@ public class ProductService {
         return new ProductDTO(productRepository.save(product));
     }
 
-    public ProductDTO updateProduct(Product product){
+    public ProductDTO addProduct(ProductDTO productDTO){
+        return new ProductDTO(productRepository.save(createProductFromProductDTO(productDTO)));
+    }
+
+    public ProductDTO updateProduct(ProductDTO productDTO){
+
+        Product product = getProductById(productDTO.getId()).orElseThrow(() -> new ResourceNotFoundException("Product with id: " + productDTO.getId() + " doesn't exist"));
+
+        if (!productDTO.getTitle().equals("")) {
+            product.setTitle(productDTO.getTitle());
+        }
+        if (productDTO.getPrice()!=0) {
+            product.setPrice(productDTO.getPrice());
+        }
+        if (!productDTO.getCategory().equals("")) {
+            product.setCategory(categoryRepository.findByTitle(productDTO.getCategory()).orElseGet(() -> categoryRepository.save(new Category(productDTO.getCategory()))));
+        }
         return new ProductDTO(productRepository.save(product));
+    }
+
+    private Product createProductFromProductDTO(ProductDTO productDTO) {
+        return new Product(productDTO.getTitle(), productDTO.getPrice(), categoryRepository.findByTitle(productDTO.getCategory()).orElseGet(() -> categoryRepository.save(new Category(productDTO.getCategory()))));
     }
 
     public Page<ProductDTO> getProductsLikeTitle(String like, Integer page, Integer size, String[] sort) {

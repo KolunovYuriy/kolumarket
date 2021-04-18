@@ -27,4 +27,9 @@ public class Category {
     @OneToMany(mappedBy = "category")
     @Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
     private List<Product> productItems;
+
+    public Category(String title) {
+        this.title = title;
+    }
+
 }

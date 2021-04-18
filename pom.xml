@@ -8,14 +8,23 @@
         <version>2.4.4</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>ru.kolumarket</groupId>
-    <artifactId>market</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <artifactId>kolumarket</artifactId>
+    <version>0.0.1</version>
     <name>market</name>
     <description>kolumarket</description>
+
     <properties>
         <java.version>11</java.version>
     </properties>
+
+    <!--<modules>
+        <module>auth-service</module>
+    </modules>-->
+
+    <packaging>pom</packaging>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -64,19 +73,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.5.2</version>>
-        </dependency>
-        <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
-        </dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.0</version>
         </dependency>
     </dependencies>
 

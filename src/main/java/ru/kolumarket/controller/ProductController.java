@@ -84,16 +84,16 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductDTO add(@RequestBody Product product) {
-        return productService.addProduct(product);
+    public ProductDTO add(@RequestBody ProductDTO productDTO) {
+        return productService.addProduct(productDTO);
     }
 
     @PutMapping
-    public ProductDTO update(@RequestBody Product product) {
-        if (product.getId()<=0) {
+    public ProductDTO update(@RequestBody ProductDTO productDTO) {
+        if (productDTO.getId()<=0) {
             throw new ResourceNotFoundException("doesn't insert Product id");
         }
-        return productService.updateProduct(productService.getProductById(product.getId()).orElseThrow(() -> new ResourceNotFoundException("Product with id: " + product.getId() + " doesn't exist")));
+        return productService.updateProduct(productDTO);
     }
 
 }
