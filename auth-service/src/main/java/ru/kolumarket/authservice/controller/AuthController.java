@@ -1,18 +1,23 @@
 package ru.kolumarket.authservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.kolumarket.authservice.configurations.jwt.JwtProvider;
 import ru.kolumarket.authservice.domain.User;
 import ru.kolumarket.authservice.dto.AuthRequestDTO;
 import ru.kolumarket.authservice.dto.AuthResponseDTO;
 import ru.kolumarket.authservice.dto.SignUpRequestDTO;
 import ru.kolumarket.authservice.exeptions.MarketError;
 import ru.kolumarket.authservice.services.UserService;
+import ru.kolumarket.core.domain.UserInfo;
+import ru.kolumarket.core.interfaces.ITokenService;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 
 @RestController
 public class AuthController {
@@ -21,7 +26,10 @@ public class AuthController {
     private UserService userService;
 
     @Autowired
-    private JwtProvider jwtProvider;
+    private ITokenService tokenService;
+
+    @Value("${server.servlet.context-path}")
+    String path;
 
     @PostMapping("/register")
     public String registerUser(@RequestBody SignUpRequestDTO signUpRequest) {
@@ -32,14 +40,25 @@ public class AuthController {
         return "OK";
     }
 
-    @PostMapping("/auth")
-    //http://localhost:8189/market/auth/
-    public ResponseEntity<?> auth(@RequestBody AuthRequestDTO request) {
+    @PostMapping("/login")
+    public ResponseEntity<?> login(HttpServletResponse response, @RequestBody AuthRequestDTO request) {
         User user = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
         if (user == null) return new ResponseEntity<>(new MarketError(HttpStatus.NOT_FOUND.value(), "Access denied"),HttpStatus.NOT_ACCEPTABLE);
         else {
-            String token = jwtProvider.generateToken(user.getLogin());
+            UserInfo userInfo = UserInfo.builder()
+                    .userId(user.getId())
+                    .role(user.getRole().getName())
+                    .build();
+            String token = tokenService.generateToken(userInfo);
+
+            Cookie cookie = new Cookie("token", token.replace("Bearer ", ""));
+            cookie.setPath(path);
+            cookie.setMaxAge(tokenService.getJwtExpiration().intValue()*3600);
+            response.addCookie(cookie);
+            response.setContentType("text/plain");
+
             return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponseDTO(token));
         }
     }
+
 }

@@ -1,7 +1,6 @@
-package ru.kolumarket.authservice.domain;
+package ru.kolumarket.marketservice.domain;
 
 import lombok.Data;
-
 import javax.persistence.*;
 
 @Entity
@@ -11,7 +10,7 @@ public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column
     private String name;

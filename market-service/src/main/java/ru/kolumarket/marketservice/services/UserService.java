@@ -1,13 +1,13 @@
-package ru.kolumarket.authservice.services;
+package ru.kolumarket.marketservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.kolumarket.authservice.domain.Role;
-import ru.kolumarket.authservice.domain.User;
-import ru.kolumarket.authservice.repository.RoleRepository;
-import ru.kolumarket.authservice.repository.UserRepository;
+import ru.kolumarket.marketservice.domain.Role;
+import ru.kolumarket.marketservice.domain.User;
+import ru.kolumarket.marketservice.repository.RoleRepository;
+import ru.kolumarket.marketservice.repository.UserRepository;
+
 
 @Service
 public class UserService {

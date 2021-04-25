@@ -1,13 +1,13 @@
-package ru.kolumarket.authservice;
+package ru.kolumarket.marketservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication(scanBasePackages = "ru.kolumarket")
-public class AuthServiceApplication {
+public class MarketServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(AuthServiceApplication.class, args);
+        SpringApplication.run(MarketServiceApplication.class, args);
     }
 
 }

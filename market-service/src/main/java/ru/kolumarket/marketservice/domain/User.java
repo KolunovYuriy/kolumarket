@@ -1,6 +1,7 @@
-package ru.kolumarket.authservice.domain;
+package ru.kolumarket.marketservice.domain;
 
 import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
@@ -10,13 +11,16 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column
     private String login;
 
     @Column
     private String password;
+
+    @OneToOne(mappedBy = "user")
+    private Customer customer;
 
     @ManyToOne
     @JoinColumn(name = "role_id")
