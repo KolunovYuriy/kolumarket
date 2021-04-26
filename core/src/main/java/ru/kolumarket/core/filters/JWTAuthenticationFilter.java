@@ -36,14 +36,16 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
         Cookie cookieJWT = null;
 
         if (httpServletRequest.getCookies()!=null) {
-            cookieJWT = Arrays.stream(httpServletRequest.getCookies()).filter(cookie -> cookie.getName() == "token").findFirst().orElseGet(() -> {
+            cookieJWT = Arrays.stream(httpServletRequest.getCookies()).filter(cookie -> cookie.getName().equals("token")).findFirst().orElseGet(() -> {
                 if (!authorizationHeaderIsInvalid(authorizationHeader)) {
                     return new Cookie("token", authorizationHeader.replace("Bearer ", ""));
                 } else return null;
             });
         }
-
-        if (cookieJWT==null) {
+        else if (!authorizationHeaderIsInvalid(authorizationHeader)) {
+            cookieJWT =  new Cookie("token", authorizationHeader.replace("Bearer ", ""));
+        }
+        else {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }

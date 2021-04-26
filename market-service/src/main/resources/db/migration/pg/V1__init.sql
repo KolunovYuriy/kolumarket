@@ -1,39 +1,6 @@
-create table role_table
-(
-    id   serial      not null
-        constraint role_table_pk
-            primary key,
-    name varchar(20) not null
-);
-
-create table user_table
-(
-    id       serial not null
-        constraint user_table_pk
-            primary key,
-    login    varchar(50) not null,
-    password varchar(500) not null,
-    email    varchar(50) unique,
-    role_id  integer
-        constraint user_table_role_table_id_fk
-            references role_table
-);
-
-create
-unique index user_table_login_uindex
-    on user_table (login);
-
-insert into role_table(id, name) values (1, 'ROLE_ADMIN');
-insert into role_table(id, name) values (2, 'ROLE_USER');
-
-insert into user_table (id, login, password, email, role_id)
-values
-(1, 'user1', '$2a$10$XBF043cDt.u2kbhOllqYJeP9vId6j4KNqOgUFPUl9mh28ejBjY7WO', 'user1@gmail.com', 1), -- Q1w2e3
-(2, 'user2', '$2a$10$amgTQTk4P97KHInX0LYQBu1pFdM2EJEZD6SlVgYleukXvE9DML5/y', 'user2@gmail.com', 2); -- qazwsx
-
 CREATE TABLE categories (
-                          id bigserial PRIMARY KEY,
-                          title VARCHAR(255)
+                            id bigserial PRIMARY KEY,
+                            title VARCHAR(255)
 );
 INSERT INTO categories (id,title) VALUES
 (1,'food'),
@@ -41,12 +8,12 @@ INSERT INTO categories (id,title) VALUES
 ;
 
 CREATE TABLE products (
-    id bigserial PRIMARY KEY,
-    title VARCHAR(255),
-    price int,
-    category_id bigint REFERENCES categories (id),
-    created_at timestamp default current_timestamp,
-    updated_at timestamp default current_timestamp
+                          id bigserial PRIMARY KEY,
+                          title VARCHAR(255),
+                          price int,
+                          category_id bigint REFERENCES categories (id),
+                          created_at timestamp default current_timestamp,
+                          updated_at timestamp default current_timestamp
 );
 INSERT INTO products (id,title, price, category_id) VALUES
 (1,'Sugar', 10, 1),
@@ -72,11 +39,10 @@ INSERT INTO products (id,title, price, category_id) VALUES
 ;
 
 CREATE TABLE customers (
-    id bigserial PRIMARY KEY,
-    name VARCHAR(255),
-    session_id VARCHAR(255),
-    user_id int UNIQUE,
-    FOREIGN KEY (user_id) REFERENCES user_table (id)
+                           id bigserial PRIMARY KEY,
+                           name VARCHAR(255),
+                           session_id VARCHAR(255),
+                           user_id int UNIQUE
 );
 INSERT INTO customers (id,name, user_id) VALUES
 (1,'Vasya',1),
@@ -84,34 +50,34 @@ INSERT INTO customers (id,name, user_id) VALUES
 ;
 
 CREATE TABLE orders (
-    id bigserial PRIMARY KEY,
-    status VARCHAR(255),
-    customer_id int,
-    created_at timestamp default current_timestamp,
-    FOREIGN KEY (customer_id) REFERENCES customers (id));
+                        id bigserial GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+                        status VARCHAR(255),
+                        customer_id int,
+                        created_at timestamp default current_timestamp,
+                        FOREIGN KEY (customer_id) REFERENCES customers (id));
 
 CREATE TABLE order_items (
-    order_id int,
-    product_id int,
-    count int,
-    FOREIGN KEY (order_id) REFERENCES orders (id),
-    FOREIGN KEY (product_id) REFERENCES products (id));
+                             order_id int,
+                             product_id int,
+                             count int,
+                             FOREIGN KEY (order_id) REFERENCES orders (id),
+                             FOREIGN KEY (product_id) REFERENCES products (id));
 
 CREATE TABLE warehouses (
-                             id bigserial PRIMARY KEY,
-                             location VARCHAR(255)
-                             );
+                            id bigserial PRIMARY KEY,
+                            location VARCHAR(255)
+);
 INSERT INTO warehouses (id,location) VALUES
 (1,'Moscow'),
 (2,'Saint Petersburg')
 ;
 
 CREATE TABLE product_items (
-                            warehouse_id int,
-                            product_id int,
-                            count int,
-                            FOREIGN KEY (warehouse_id) REFERENCES warehouses (id),
-                            FOREIGN KEY (product_id) REFERENCES products (id));
+                               warehouse_id int,
+                               product_id int,
+                               count int,
+                               FOREIGN KEY (warehouse_id) REFERENCES warehouses (id),
+                               FOREIGN KEY (product_id) REFERENCES products (id));
 INSERT INTO product_items (warehouse_id,product_id,count) VALUES
 (1,1,100),
 (1,3,100),
@@ -134,4 +100,3 @@ INSERT INTO product_items (warehouse_id,product_id,count) VALUES
 (2,18,10),
 (2,20,10)
 ;
-

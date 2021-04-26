@@ -1,4 +1,4 @@
-package ru.kolumarket.marketservice.exeptions;
+package ru.kolumarket.core.exeptions;
 
 import lombok.Data;
 

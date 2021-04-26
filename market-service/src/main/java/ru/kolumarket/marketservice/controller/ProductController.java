@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kolumarket.marketservice.dto.ProductDTO;
-import ru.kolumarket.marketservice.exeptions.ResourceNotFoundException;
+import ru.kolumarket.core.exeptions.ResourceNotFoundException;
 import ru.kolumarket.marketservice.services.ProductService;
 
 import javax.servlet.http.Cookie;

@@ -1,4 +1,4 @@
-package ru.kolumarket.marketservice.exeptions;
+package ru.kolumarket.core.exeptions;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(String message) {

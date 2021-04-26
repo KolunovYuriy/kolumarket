@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import ru.kolumarket.marketservice.domain.Category;
 import ru.kolumarket.marketservice.domain.Product;
 import ru.kolumarket.marketservice.dto.ProductDTO;
-import ru.kolumarket.marketservice.exeptions.ResourceNotFoundException;
+import ru.kolumarket.core.exeptions.ResourceNotFoundException;
 import ru.kolumarket.marketservice.repository.CategoryRepository;
 import ru.kolumarket.marketservice.repository.ProductRepository;
 import ru.kolumarket.marketservice.repository.SortDirection;

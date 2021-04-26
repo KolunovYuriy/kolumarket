@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.kolumarket.core.domain.UserInfo;
 
 import javax.persistence.*;
 
@@ -29,9 +30,8 @@ public class Customer {
     @Column(name = "session_id")
     private String sessionId;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private int userId;
 
     @OneToMany(mappedBy = "customer")
     private List<Order> orders;
@@ -54,11 +54,11 @@ public class Customer {
         return Objects.hash(id, name);
     }
 
-    public Customer(String name, User user) {
+    public Customer(String name, UserInfo user) {
         if (name.equals(""))
-            this.name = user.getLogin();
+            this.name = "Customer_"+user.getUserId();
         else this.name = name;
-        this.user = user;
+        this.userId = user.getUserId().intValue();
         this.orders = new ArrayList<>();
     }
 }

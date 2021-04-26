@@ -11,9 +11,9 @@ import ru.kolumarket.authservice.domain.User;
 import ru.kolumarket.authservice.dto.AuthRequestDTO;
 import ru.kolumarket.authservice.dto.AuthResponseDTO;
 import ru.kolumarket.authservice.dto.SignUpRequestDTO;
-import ru.kolumarket.authservice.exeptions.MarketError;
 import ru.kolumarket.authservice.services.UserService;
 import ru.kolumarket.core.domain.UserInfo;
+import ru.kolumarket.core.exeptions.MarketError;
 import ru.kolumarket.core.interfaces.ITokenService;
 
 import javax.servlet.http.Cookie;

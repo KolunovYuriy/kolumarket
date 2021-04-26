@@ -2,6 +2,7 @@ package ru.kolumarket.marketservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.kolumarket.core.domain.UserInfo;
 import ru.kolumarket.marketservice.domain.*;
 import ru.kolumarket.marketservice.dto.OrderItemDTO;
 import ru.kolumarket.marketservice.repository.CustomerRepository;
@@ -28,28 +29,27 @@ public class OrderService {
     @Autowired
     private ProductRepository productRepository;
 
-    public List<OrderItemDTO> getCutomerOrder(User user) {
+    public List<OrderItemDTO> getCutomerOrder(UserInfo user) {
         return orderItemRepository.getOrderItemsByOrder(getCreatedUserOrder(user)).stream().map(orderItem -> new OrderItemDTO(orderItem)).collect(Collectors.toList());
     }
 
-    private Order getCreatedUserOrder(User user) {
-        Customer currentCustomer = customerRepository.getCustomerByUser(user).orElseGet(()->customerRepository.save(new Customer("",user)));
+    private Order getCreatedUserOrder(UserInfo user) {
+        Customer currentCustomer = customerRepository.getCustomerByUserId(user.getUserId().intValue()).orElseGet(()->customerRepository.save(new Customer("",user)));
 //        return orderRepository.getOrderByCustomerAndStatus(currentCustomer, OrderStatus.CREATE.name()).orElseGet(()->
 //                orderRepository.save(new Order(currentCustomer, OrderStatus.CREATE))
 //
 //        );
         return orderRepository.getOrderByCustomer(currentCustomer).orElseGet(()->
                 orderRepository.save(new Order(currentCustomer, OrderStatus.CREATE))
-
         );
     }
 
     @Transactional
-    public OrderItemDTO addProduct(Long productId, User user) {
+    public OrderItemDTO addProduct(Long productId, UserInfo user) {
         Order currentOrder = getCreatedUserOrder(user);
         Product currentProduct = productRepository.findById(productId).get();
         OrderItem orderItem = orderItemRepository.getOrderItemByProductAndOrder(currentProduct,currentOrder).orElseGet(()->
-                orderItemRepository.save(new OrderItem(currentProduct,currentOrder))
+                new OrderItem(currentProduct,currentOrder)
         );
         orderItem.setCount(orderItem.getCount()+1);
         return new OrderItemDTO(orderItemRepository.save(orderItem));

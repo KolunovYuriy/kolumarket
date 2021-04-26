@@ -34,7 +34,7 @@ public class Product {
     private Category category;
 
     @OneToMany(mappedBy = "product")
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    //@Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<OrderItem> orderItems;
 
     @OneToMany(mappedBy = "product")
