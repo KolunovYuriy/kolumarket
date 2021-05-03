@@ -2,11 +2,12 @@ package ru.kolumarket.authservice.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.*;
 import ru.kolumarket.authservice.domain.User;
 import ru.kolumarket.authservice.dto.AuthRequestDTO;
 import ru.kolumarket.authservice.dto.AuthResponseDTO;
@@ -18,8 +19,10 @@ import ru.kolumarket.core.interfaces.ITokenService;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Duration;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -27,6 +30,12 @@ public class AuthController {
 
     @Autowired
     private ITokenService tokenService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Value("${kolumarket.jwt.expiration}")
+    private String jwtExpiration;
 
     @Value("${server.servlet.context-path}")
     String path;
@@ -59,6 +68,19 @@ public class AuthController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponseDTO(token));
         }
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping("/loggedout")
+    public ResponseEntity<?> loggedout(HttpServletResponse response) {
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //redisTemplate.opsForSet().add("expiredTokens",userInfo.getToken());
+        //redisTemplate.expire("expiredTokens", Duration.ofHours(Long.parseLong(jwtExpiration)));
+        //redisTemplate.opsForHash().put("rejectedTokens",userInfo.getToken(),true);
+        redisTemplate.opsForValue().setIfAbsent(userInfo.getToken(),"rejected",Duration.ofHours(Long.parseLong(jwtExpiration)));
+        SecurityContextHolder.getContext().getAuthentication().setAuthenticated(false);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body("logout");
     }
 
 }

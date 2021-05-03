@@ -53,6 +53,7 @@ public class JWTTokenService implements ITokenService {
         return UserInfo.builder()
                 .userId(userId)
                 .role(role)
+                .token(token)
                 .build();
     }
 }

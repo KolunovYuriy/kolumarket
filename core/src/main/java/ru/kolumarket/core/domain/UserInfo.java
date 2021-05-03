@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class UserInfo {
     private Long userId;
     private String role;
+    private String token;
 }

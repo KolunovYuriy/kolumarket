@@ -2,6 +2,7 @@ package ru.kolumarket.core.configurations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -20,17 +21,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private JWTTokenService tokenService;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .httpBasic().disable()
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/products/**","/auth/**").permitAll()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/products/**","/register", "/auth").permitAll()
-                .and()
-                .addFilterBefore(new JWTAuthenticationFilter(tokenService),
+                .addFilterBefore(new JWTAuthenticationFilter(tokenService, redisTemplate),
                         UsernamePasswordAuthenticationFilter.class);
     }
 
