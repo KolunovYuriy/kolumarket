@@ -3,6 +3,7 @@ package ru.kolumarket.marketservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kolumarket.marketservice.dto.ProductDTO;
@@ -26,6 +27,9 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     //http://localhost:8189/market/products/{id}
     @GetMapping("/{id}")
@@ -67,13 +71,6 @@ public class ProductController {
             @RequestParam(defaultValue = "10") Integer size,
             @RequestParam(value = "sort", required = false, defaultValue = "") String[] sort
     ) {
-        Cookie cookie = new Cookie("data", "Hello");//создаем объект Cookie,
-        //в конструкторе указываем значения для name и value
-
-        cookie.setPath(path);//устанавливаем путь
-        cookie.setMaxAge(86400);//здесь устанавливается время жизни куки
-        response.addCookie(cookie);//добавляем Cookie в запрос
-        response.setContentType("text/plain");//устанавливаем контекст
         return ResponseEntity.ok(productService.getProductsLikeTitle(title.toLowerCase(),page-1, size, sort));
     }
 

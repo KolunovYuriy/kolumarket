@@ -1,10 +1,12 @@
 package ru.kolumarket.marketservice.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import ru.kolumarket.marketservice.domain.Category;
 import ru.kolumarket.marketservice.domain.Product;
@@ -14,6 +16,7 @@ import ru.kolumarket.marketservice.repository.CategoryRepository;
 import ru.kolumarket.marketservice.repository.ProductRepository;
 import ru.kolumarket.marketservice.repository.SortDirection;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -29,8 +32,22 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    //@Value("${kolumarket.jwt.redis_cash_expiration}")
+    @Value("1")
+    private String redisCashExpiration;
+
     public Optional<ProductDTO> getById(Long id) {
-        return productRepository.findById(id).map(ProductDTO::new);
+        if (redisTemplate.hasKey("getProductById " + id)) {
+            return Optional.of((ProductDTO)redisTemplate.opsForValue().get("getProductById " + id));
+        }
+        else {
+            Optional<ProductDTO> productDTO = productRepository.findById(id).map(ProductDTO::new);
+            redisTemplate.opsForValue().setIfAbsent("getProductById " + id, productDTO.get(), Duration.ofHours(Long.parseLong(redisCashExpiration)));
+            return productDTO;
+        }
     }
 
     public Optional<Product> getProductById(Long id) {
