@@ -19,6 +19,5 @@ CREATE TABLE orders (
 CREATE TABLE order_items (
                              order_id int,
                              product_id int,
-                             product_name VARCHAR(255),
                              count int,
                              FOREIGN KEY (order_id) REFERENCES orders (id));

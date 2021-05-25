@@ -23,6 +23,7 @@
     <modules>
         <module>auth-service</module>
         <module>market-service</module>
+        <module>order-service</module>
         <module>core</module>
     </modules>
 

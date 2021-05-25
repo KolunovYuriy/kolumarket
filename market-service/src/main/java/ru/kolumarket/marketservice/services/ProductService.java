@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import ru.kolumarket.core.dto.ProductDtoCore;
 import ru.kolumarket.marketservice.domain.Category;
 import ru.kolumarket.marketservice.domain.Product;
 import ru.kolumarket.marketservice.dto.ProductDTO;
@@ -75,8 +76,8 @@ public class ProductService {
         return pageable;
     }
 
-    public  Page<ProductDTO> getAll(Integer leftCost, Integer rightCost, Integer page, Integer size, String[] sort){
-        Page<ProductDTO> result = null;
+    public  Page<ProductDtoCore> getAll(Integer leftCost, Integer rightCost, Integer page, Integer size, String[] sort){
+        Page<ProductDtoCore> result = null;
 
         Pageable pageable = getPageableFromRequest(page,size,sort);
 
@@ -107,11 +108,11 @@ public class ProductService {
         return new ProductDTO(productRepository.save(product));
     }
 
-    public ProductDTO addProduct(ProductDTO productDTO){
+    public ProductDTO addProduct(ProductDtoCore productDTO){
         return new ProductDTO(productRepository.save(createProductFromProductDTO(productDTO)));
     }
 
-    public ProductDTO updateProduct(ProductDTO productDTO){
+    public ProductDTO updateProduct(ProductDtoCore productDTO){
 
         Product product = getProductById(productDTO.getId()).orElseThrow(() -> new ResourceNotFoundException("Product with id: " + productDTO.getId() + " doesn't exist"));
 
@@ -127,7 +128,7 @@ public class ProductService {
         return new ProductDTO(productRepository.save(product));
     }
 
-    private Product createProductFromProductDTO(ProductDTO productDTO) {
+    private Product createProductFromProductDTO(ProductDtoCore productDTO) {
         return new Product(productDTO.getTitle(), productDTO.getPrice(), categoryRepository.findByTitle(productDTO.getCategory()).orElseGet(() -> categoryRepository.save(new Category(productDTO.getCategory()))));
     }
 

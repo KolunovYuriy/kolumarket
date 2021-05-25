@@ -6,18 +6,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.kolumarket.core.dto.ProductDtoCore;
+import ru.kolumarket.core.externalclient.ProductClient;
 import ru.kolumarket.marketservice.dto.ProductDTO;
 import ru.kolumarket.core.exeptions.ResourceNotFoundException;
 import ru.kolumarket.marketservice.services.ProductService;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/products")
 //http://localhost:8189/market/products/
-public class ProductController {
+public class ProductController implements ProductClient {
 
     @Autowired
     private HttpSession httpSession;
@@ -41,9 +42,10 @@ public class ProductController {
      * http://localhost:8189/market/products
      * Для сортировки  необходимо использовать зарезервированный параметр sort, в котором указывать поле и направление сортировки через запятую, в случае необходимости сортировки по N полям использовать N пар поле / направление дублируя параметр sort
      * пример http://localhost:8189/app/products?sort=cost,ASC&sort=title,DESC&sort=id,ASC
+     * @return
      */
     @GetMapping
-    public Page<ProductDTO> getAll(
+    public Page<ProductDtoCore> getAll(
             @RequestParam(value = "l", required = false) Integer leftCost,
             @RequestParam(value = "r", required = false) Integer rightCost,
             @RequestParam(defaultValue = "1") Integer page,
@@ -80,12 +82,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductDTO add(@RequestBody ProductDTO productDTO) {
+    public ProductDtoCore add(@RequestBody ProductDtoCore productDTO) {
         return productService.addProduct(productDTO);
     }
 
     @PutMapping
-    public ProductDTO update(@RequestBody ProductDTO productDTO) {
+    public ProductDtoCore update(@RequestBody ProductDtoCore productDTO) {
         if (productDTO.getId()<=0) {
             throw new ResourceNotFoundException("doesn't insert Product id");
         }

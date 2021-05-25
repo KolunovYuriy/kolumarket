@@ -2,11 +2,12 @@ package ru.kolumarket.marketservice.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.kolumarket.core.dto.ProductDtoCore;
 import ru.kolumarket.marketservice.domain.Product;
 
 @Data
 @NoArgsConstructor
-public class ProductDTO {
+public class ProductDTO extends ProductDtoCore {
     private Long id;
     private String title;
     private int price;
