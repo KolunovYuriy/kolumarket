@@ -1,5 +1,5 @@
 server:
-  port: 8191
+  port: 8190
   servlet:
     context-path: /
 spring:
@@ -24,12 +24,13 @@ spring:
     locations: classpath:/db/migration/h2
   application:
     name:
-      order-service
+      product-service
 
 eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
+    fetch-registry: true
 
 kolumarket:
   redis_cash_expiration: 1

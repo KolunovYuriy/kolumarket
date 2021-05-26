@@ -1,17 +1,15 @@
-package ru.kolumarket.orderservice;
+package ru.kolumarket.product;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 
-@EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication(scanBasePackages = "ru.kolumarket")
-public class OrderServiceApplication {
+public class ProductServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OrderServiceApplication.class, args);
+        SpringApplication.run(ProductServiceApplication.class, args);
     }
 
 }

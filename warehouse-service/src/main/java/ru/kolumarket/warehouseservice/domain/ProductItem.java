@@ -1,9 +1,10 @@
-package ru.kolumarket.orderservice.domain;
+package ru.kolumarket.warehouseservice.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,8 +15,8 @@ import java.util.Objects;
 @Setter
 @Getter
 @Entity
-@Table(name = "order_items")
-public class OrderItem {
+@Table(name = "product_items")
+public class ProductItem {
 
     @Embeddable
     @AllArgsConstructor
@@ -23,8 +24,8 @@ public class OrderItem {
     @Setter
     @Getter
     public static class Id implements Serializable {
-        @Column(name = "order_id")
-        private Long orderId;
+        @Column(name = "warehouse_id")
+        private Long warehouseId;
 
         @Column(name = "product_id")
         private Long productId;
@@ -34,12 +35,12 @@ public class OrderItem {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             Id id = (Id) o;
-            return Objects.equals(orderId, id.orderId) && Objects.equals(productId, id.productId);
+            return Objects.equals(warehouseId, id.warehouseId) && Objects.equals(productId, id.productId);
         }
 
         @Override
         public int hashCode() {
-            return Objects.hash(orderId, productId);
+            return Objects.hash(warehouseId, productId);
         }
     }
 
@@ -48,10 +49,11 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(
-            name = "order_id",
+            name = "warehouse_id",
             insertable = false, updatable = false
     )
-    private Order order;
+    @Cascade(org.hibernate.annotations.CascadeType.DETACH)
+    private Warehouse warehouse;
 
     @Column(
             name = "product_id",
@@ -59,28 +61,16 @@ public class OrderItem {
     )
     private Long productId;
 
-    @Column(name = "product_name")
-    private String productName;
-
     @Column(name = "count")
     private int count;
 
-    public OrderItem(Long productId, Order order) {
-        fillProductAndOrderParams(productId, order);
-    }
-
-    public OrderItem(Long productId, String productName, Order order) {
-        fillProductAndOrderParams(productId, order);
-        this.productName = productName;
-    }
-
-    private void fillProductAndOrderParams(Long productId, Order order) {
+    public ProductItem(Long productId, Warehouse warehouse) {
         this.productId = productId;
-        this.order = order;
+        this.warehouse = warehouse;
         this.id.productId = productId;
-        this.id.orderId = order.getId();
+        this.id.warehouseId = warehouse.getId();
         this.count = 0;
-        order.getOrderItems().add(this);
+        warehouse.getProductItems().add(this);
     }
 
 }

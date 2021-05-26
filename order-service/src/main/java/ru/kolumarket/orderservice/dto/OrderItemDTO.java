@@ -12,7 +12,7 @@ public class OrderItemDTO {
     private Long productId;
 
     public OrderItemDTO(OrderItem orderItem) {
-        //this.title = orderItem.getProduct().getTitle();
+        this.title = orderItem.getProductName();
         this.productId = orderItem.getProductId();
         this.count = orderItem.getCount();
     }

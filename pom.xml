@@ -22,8 +22,9 @@
 
     <modules>
         <module>auth-service</module>
-        <module>market-service</module>
+        <module>product-service</module>
         <module>order-service</module>
+        <module>warehouse-service</module>
         <module>core</module>
     </modules>
 

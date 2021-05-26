@@ -1,4 +1,4 @@
-package ru.kolumarket.orderservice;
+package ru.kolumarket.warehouseservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,10 +8,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients
 @EnableDiscoveryClient
 @SpringBootApplication(scanBasePackages = "ru.kolumarket")
-public class OrderServiceApplication {
+public class WarehouseServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OrderServiceApplication.class, args);
+        SpringApplication.run(WarehouseServiceApplication.class, args);
     }
 
 }

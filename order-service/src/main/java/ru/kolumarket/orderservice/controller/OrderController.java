@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/orders")
-//http://localhost:8191/market/orders/
+//http://localhost:8191/orders/
 public class OrderController {
 
     @Autowired
