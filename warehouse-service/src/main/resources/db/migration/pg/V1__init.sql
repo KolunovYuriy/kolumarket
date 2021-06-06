@@ -23,6 +23,7 @@ INSERT INTO product_items (warehouse_id,product_id,count) VALUES
 (1,15,10),
 (1,17,10),
 (1,19,10),
+(2,1,50),
 (2,2,100),
 (2,4,100),
 (2,6,100),

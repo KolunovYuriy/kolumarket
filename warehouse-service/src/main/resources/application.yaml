@@ -26,11 +26,17 @@ spring:
     name:
       warehouse-service
 
+  rabbitmq:
+    username: guest
+    password: guest
+    host: localhost
+
 eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
     fetch-registry: true
+
 
 kolumarket:
   redis_cash_expiration: 1

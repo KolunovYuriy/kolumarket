@@ -11,12 +11,14 @@ public class ProductDTO extends ProductDtoCore {
     private Long id;
     private String title;
     private int price;
+    private int productCount;
     private String category;
 
     public ProductDTO(Product p) {
         this.id = p.getId();
         this.title = p.getTitle();
         this.price = p.getPrice();
+        this.productCount = p.getProductCount();
         this.category = p.getCategory().getTitle();
     }
 

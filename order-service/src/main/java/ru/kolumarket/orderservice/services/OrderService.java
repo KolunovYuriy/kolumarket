@@ -34,6 +34,9 @@ public class OrderService {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private ProductFeignClient productClient;
+
     public List<OrderItemDTO> getCutomerOrder(UserInfo user) {
         return orderItemRepository.getOrderItemsByOrder(getCreatedUserOrder(user)).stream().map(orderItem -> new OrderItemDTO(orderItem)).collect(Collectors.toList());
     }
@@ -50,12 +53,12 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderItemDTO addProduct(Long productId, ProductFeignClient productFeignClient, UserInfo user) {
+    public OrderItemDTO addProduct(Long productId, UserInfo user) {
         Order currentOrder = getCreatedUserOrder(user);
         //Product currentProduct = productRepository.findById(productId).get();
         OrderItem orderItem = orderItemRepository.getOrderItemByProductIdAndOrder(productId,currentOrder).orElseGet(()->
-                new OrderItem(productId,productFeignClient.getById(productId).getTitle(),currentOrder)
-                //new OrderItem(productId,restTemplate.getForObject("http://localhost:8190/market/products/"+productId, ProductDtoCore.class).getTitle(),currentOrder)
+                //new OrderItem(productId,productClient.getById(productId).getTitle(),currentOrder) // TODO: разобраться, почему перестало работать
+                new OrderItem(productId,restTemplate.getForObject("http://localhost:8190/"+productId, ProductDtoCore.class).getTitle(),currentOrder)
         );
         orderItem.setCount(orderItem.getCount()+1);
         return new OrderItemDTO(orderItemRepository.save(orderItem));

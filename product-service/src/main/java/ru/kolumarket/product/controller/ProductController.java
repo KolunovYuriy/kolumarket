@@ -6,9 +6,9 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.kolumarket.core.dto.ProductDtoCore;
+import ru.kolumarket.core.exeptions.ResourceNotFoundException;
 import ru.kolumarket.core.externalclient.ProductClient;
 import ru.kolumarket.product.dto.ProductDTO;
-import ru.kolumarket.core.exeptions.ResourceNotFoundException;
 import ru.kolumarket.product.services.ProductService;
 
 import javax.servlet.http.HttpServletResponse;

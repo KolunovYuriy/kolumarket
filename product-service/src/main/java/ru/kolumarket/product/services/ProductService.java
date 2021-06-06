@@ -136,4 +136,10 @@ public class ProductService {
         return productRepository.getProductsLikeTitle(like,getPageableFromRequest(page,size,sort)).map(ProductDTO::new);
 //        return productRepository.getProductsByTitleIsLike(like);
     }
+
+    public void updateProductRemainder(Long productId, int productCount) {
+        Product currentProduct = getProductById(productId).get();
+        currentProduct.setProductCount(productCount);
+        productRepository.save(currentProduct);
+    }
 }

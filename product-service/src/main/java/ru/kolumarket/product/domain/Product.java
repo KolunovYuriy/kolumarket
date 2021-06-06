@@ -29,6 +29,9 @@ public class Product {
     @Column(name = "price")
     private int price;
 
+    @Column(name = "product_count")
+    private int productCount;
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

@@ -23,8 +23,6 @@ public class OrderController {
     @Autowired
     private OrderService orderService;
 
-    private final ProductFeignClient productClient;
-
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping
     public ResponseEntity<?> getAll(
@@ -40,7 +38,7 @@ public class OrderController {
             @PathVariable Long productId
     ) {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.addProduct(productId, productClient, userInfo));
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderService.addProduct(productId, userInfo));
     }
 
 }
