@@ -13,6 +13,7 @@ import ru.kolumarket.product.domain.Category;
 import ru.kolumarket.product.domain.Product;
 import ru.kolumarket.product.dto.ProductDTO;
 import ru.kolumarket.core.exeptions.ResourceNotFoundException;
+import ru.kolumarket.product.dto.ProductDtoBuilder;
 import ru.kolumarket.product.repository.CategoryRepository;
 import ru.kolumarket.product.repository.ProductRepository;
 import ru.kolumarket.product.repository.SortDirection;
@@ -105,7 +106,9 @@ public class ProductService {
     }
 
     public ProductDTO addProduct(Product product){
-        return new ProductDTO(productRepository.save(product));
+        ProductDtoBuilder builder = new ProductDtoBuilder();
+        productRepository.save(product);
+        return builder.id(product.getId()).title(product.getTitle()).price(product.getPrice()).amount(product.getProductCount()).category(product.getCategory().getTitle()).build();
     }
 
     public ProductDTO addProduct(ProductDtoCore productDTO){

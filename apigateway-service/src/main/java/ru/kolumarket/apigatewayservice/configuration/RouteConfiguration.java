@@ -10,8 +10,7 @@ public class RouteConfiguration {
 
     @Bean
     public RouteLocator gatewayRoutes(RouteLocatorBuilder builder) {
-//        return builder.routes()
-//                .route(r -> r.path("/api/v1/auth/**")
+
         return builder.routes()
                 .route(r -> r.path("/api/v1/auth/**")
                         .filters(f -> f.rewritePath("/api/v1/auth/(?.*)", "/${remains}")
