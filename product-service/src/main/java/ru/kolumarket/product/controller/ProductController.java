@@ -10,6 +10,7 @@ import ru.kolumarket.core.exeptions.ResourceNotFoundException;
 import ru.kolumarket.core.externalclient.ProductClient;
 import ru.kolumarket.product.dto.ProductDTO;
 import ru.kolumarket.product.services.ProductService;
+import ru.kolumarket.product.services.ProductServiceProxy;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -26,7 +27,7 @@ public class ProductController implements ProductClient {
     private ProductService productService;
 
     @Autowired
-    private RedisTemplate redisTemplate;
+    private ProductServiceProxy productServiceProxy;
 
     //http://localhost:8189/market/products/{id}
     @GetMapping("/{id}")

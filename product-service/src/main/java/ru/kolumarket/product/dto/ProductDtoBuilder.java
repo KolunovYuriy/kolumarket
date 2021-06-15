@@ -33,7 +33,7 @@ public class ProductDtoBuilder {
     }
 
     public ProductDTO build() {
-        return this.productDTO
+        return this.productDTO;
     }
 
 }
