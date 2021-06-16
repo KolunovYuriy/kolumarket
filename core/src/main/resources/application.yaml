@@ -1,0 +1,9 @@
+spring:
+  redis:
+    host: localhost
+    port: 6379
+kolumarket:
+  jwt:
+    secret: jwtSecretKey
+    expiration: 1 # per hours
+#debug: true
