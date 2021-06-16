@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import ru.kolumarket.core.domain.UserInfo;
+import ru.kolumarket.orderservice.dto.OrderDTO;
 import ru.kolumarket.orderservice.dto.OrderItemDTO;
 import ru.kolumarket.orderservice.feign.ProductFeignClient;
 import ru.kolumarket.orderservice.services.OrderService;
@@ -39,6 +40,16 @@ public class OrderController {
     ) {
         UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.status(HttpStatus.CREATED).body(orderService.addProduct(productId, userInfo));
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PutMapping("/{orderId}/pay/{method}")
+    public ResponseEntity<OrderDTO> payForOrder(
+            @PathVariable Long orderId,
+            @PathVariable String method
+    ) {
+        UserInfo userInfo = (UserInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(orderService.payOrder(orderId, method, userInfo));
     }
 
 }

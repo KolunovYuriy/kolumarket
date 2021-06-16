@@ -9,8 +9,12 @@ import ru.kolumarket.orderservice.domain.Customer;
 import ru.kolumarket.orderservice.domain.Order;
 import ru.kolumarket.orderservice.domain.OrderItem;
 import ru.kolumarket.orderservice.domain.OrderStatus;
+import ru.kolumarket.orderservice.dto.OrderDTO;
 import ru.kolumarket.orderservice.dto.OrderItemDTO;
 import ru.kolumarket.orderservice.feign.ProductFeignClient;
+import ru.kolumarket.orderservice.payment.PayByCreditCard;
+import ru.kolumarket.orderservice.payment.PayByWebMoney;
+import ru.kolumarket.orderservice.payment.PaymentStrategy;
 import ru.kolumarket.orderservice.repository.CustomerRepository;
 import ru.kolumarket.orderservice.repository.OrderItemRepository;
 import ru.kolumarket.orderservice.repository.OrderRepository;
@@ -64,4 +68,13 @@ public class OrderService {
         return new OrderItemDTO(orderItemRepository.save(orderItem));
     }
 
+    public OrderDTO payOrder(Long orderId, String method, UserInfo user) {
+        Order currentOrder = getCreatedUserOrder(user);
+        PaymentStrategy paymentStrategy = (method=="CreditCard") ? (new PayByCreditCard()) : ((method=="WebMoney")?(new PayByWebMoney()) :null);
+        if (paymentStrategy.pay(currentOrder)) {
+            currentOrder.setStatus(OrderStatus.PAID.name());
+            //TODO: списание со склада для доставки
+        }
+        return new OrderDTO(orderRepository.save(currentOrder));
+    }
 }
